@@ -27,8 +27,8 @@ from texttable import Texttable
 
 #pub config
 pnconfig = PNConfiguration()
-pnconfig.subscribe_key = "sub-c-14977f14-d3f6-11ea-b3f2-c27cb65b13f4"
-pnconfig.publish_key = "pub-c-0d5a26ee-1123-4d74-9022-4f9171666868"
+pnconfig.subscribe_key = "****"
+pnconfig.publish_key = "****"
 pnconfig.uuid = "serverUUID-SUB"
 
 pubnub = PubNub(pnconfig)
