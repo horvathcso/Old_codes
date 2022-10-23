@@ -1,0 +1,59 @@
+Option Explicit
+
+Sub Merge2PPT()
+    Dim pptApp As PowerPoint.Application ' Object
+    Dim pptPrs As PowerPoint.Presentation ' Object
+    Dim pptSld As PowerPoint.Slide ' Object
+    Dim pptShp As PowerPoint.Shape
+    Dim strFile As String
+    Dim r As Long
+    Dim m As Long
+    
+    strFile = Application.GetOpenFilename("PowerPoint Presentations (*.pptx),*.pptx", , "Select PowerPoint file")
+    If strFile = "False" Then
+        Beep
+        Exit Sub
+    End If
+    On Error Resume Next
+    Set pptApp = GetObject(Class:="PowerPoint.Application")
+    If pptApp Is Nothing Then
+        Set pptApp = CreateObject(Class:="PowerPoint.Application")
+        If pptApp Is Nothing Then
+            Beep
+            Exit Sub
+        End If
+    End If
+    On Error GoTo 0 ' ErrHandler
+    pptApp.Visible = msoCTrue
+    Set pptPrs = pptApp.Presentations.Open(strFile, , , msoFalse)
+    m = Range("A" & Rows.Count).End(xlUp).Row
+    For r = m To 2 Step -1
+        pptPrs.Slides(1).Duplicate
+        Set pptSld = pptPrs.Slides(2)
+        For Each pptShp In pptSld.Shapes
+            With pptShp.TextFrame.TextRange
+                .Replace Range("A" & 1).Value, Range("A" & r).Value
+                .Replace Range("B" & 1).Value, Range("B" & r).Value
+                .Replace Range("C" & 1).Value, Range("C" & r).Value
+                .Replace Range("D" & 1).Value, Range("D" & r).Value
+                .Replace Range("E" & 1).Value, Range("E" & r).Value
+                .Replace Range("F" & 1).Value, Range("F" & r).Value
+                .Replace Range("G" & 1).Value, Range("G" & r).Value
+                .Replace Range("H" & 1).Value, Range("H" & r).Value
+                .Replace Range("I" & 1).Value, Range("I" & r).Value
+                .Replace Range("J" & 1).Value, Range("J" & r).Value
+            End With
+         Next pptShp
+    Next r
+    pptPrs.Slides(1).Delete
+    pptPrs.NewWindow
+    With pptApp.FileDialog(msoFileDialogSaveAs)
+        .InitialFileName = pptPrs.Path & "\New.pptx"
+        If .Show Then .Execute
+    End With
+ExitHandler:
+    Exit Sub
+ErrHandler:
+    MsgBox Err.Description, vbExclamation
+    Resume ExitHandler
+End Sub

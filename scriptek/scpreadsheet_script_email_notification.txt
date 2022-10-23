@@ -1,0 +1,14 @@
+function Send() {
+   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("To-Do");
+   var data = sheet.getDataRange().getValues();
+   var to_do =[]
+   for (var i = 1; i < data.length; i++)  {
+     if (data[i][3]!="Complete" && data[i][0]!=""){
+     to_do.push(data[i][0]);
+     to_do.push("\n");
+     }
+     
+     var massage="To Do list: "+"\r\n"+to_do.toString();
+  }
+   MailApp.sendEmail("***@gmail.com", "Notification", massage);
+};

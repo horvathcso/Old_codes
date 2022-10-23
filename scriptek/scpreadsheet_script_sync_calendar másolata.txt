@@ -1,0 +1,27 @@
+function Calendar(){
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+  
+  for (var i = 1; i < data.length; i++)  {
+    if(data[i][29]!= "1"){
+      if(data[i][8]!= "1"){
+     if (data[i][29]== "0"){
+       if(data[i][7]!="Complete"){
+       var event = CalendarApp.getCalendarById("***@group.calendar.google.com").createAllDayEvent(data[i][0],new Date(data[i][28]));
+        event.addPopupReminder(2100)
+       event.setDescription(data[i][1])
+       Logger.log('Event ID: ' + event.getId());
+       SpreadsheetApp.getActiveSheet().getRange(i+1, 30).setValue(event.getId())
+       }
+     }
+    
+    else if (data[i][7]=="Complete" && data[i][29]!= "0")
+    {
+      var event = CalendarApp.getCalendarById("***@group.calendar.google.com").getEventById(data[i][29]);
+      event.deleteEvent();
+      SpreadsheetApp.getActiveSheet().getRange(i+1, 30).setValue(0)
+    }
+      }
+  }
+  }
+}

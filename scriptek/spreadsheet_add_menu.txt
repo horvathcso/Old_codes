@@ -1,0 +1,9 @@
+function onOpen(e) {
+  // Add a custom menu to the spreadsheet.
+  SpreadsheetApp.getUi()
+      .createMenu('Run Scripts')
+      .addItem('Send ToDo', 'Send')
+      .addItem('Sync Calendar','Calendar')
+      .addToUi();
+  
+}
